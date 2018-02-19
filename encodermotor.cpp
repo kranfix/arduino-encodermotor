@@ -1,12 +1,13 @@
 #include <Arduino.h>
 #include "encodermotor.h"
+#include <math.h>
 
 EncoderMotor::EncoderMotor(uint8_t encoderPin,int N, int radius,
                frontback_t motorPin){
   this->encoderPin = encoderPin;
   this->N = N;
   this->radius = radius;
-
+  this->diameter = 2*radius;
   this->motorPin   = motorPin;
 
   pinMode(encoderPin,    INPUT);
@@ -18,8 +19,20 @@ EncoderMotor::EncoderMotor(uint8_t encoderPin,int N, int radius,
   setMotor(Action::Stop,0);
 }
 
-void EncoderMotor::setLinearPosition(float pos){
+void EncoderMotor::setMeters(float pos){
+  encoderPosition = pos * N / (PI * diameter);
+}
 
+float EncoderMotor::getMeters(){
+  return encoderPosition * (PI * diameter) / N;
+}
+
+void EncoderMotor::setEncoder(int pos){
+  encoderPosition = pos;
+}
+
+int EncoderMotor::getEncoder(){
+  return encoderPosition;
 }
 
 void EncoderMotor::setMotor(Action _act, float limit){
@@ -43,7 +56,3 @@ void EncoderMotor::loop(){
 bool EncoderMotor::encoderEvent(){
   return event;
 }
-
-
-//eventBack = (analogRead(irPin.back) >= irLevel);
-//eventFront = (analogRead(irPin.front) >= irLevel);

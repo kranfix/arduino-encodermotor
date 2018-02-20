@@ -24,7 +24,7 @@ class EncoderMotor{
   frontback_t motorPin;
   Action act;
 public:
-  EncoderMotor(uint8_t encoderPin,int N, int radius, frontback_t motorPin);
+  EncoderMotor(uint8_t encoderPin,int N, float radius, frontback_t motorPin);
   void  setMeters(float pos);
   float getMeters();
   void  setEncoder(int pos);

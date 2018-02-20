@@ -2,13 +2,13 @@
 #include "encodermotor.h"
 #include <math.h>
 
-EncoderMotor::EncoderMotor(uint8_t encoderPin,int N, int radius,
+EncoderMotor::EncoderMotor(uint8_t encoderPin,int N, float radius,
                frontback_t motorPin){
   this->encoderPin = encoderPin;
-  this->N = N;
-  this->radius = radius;
+  this->N        = N;
+  this->radius   = radius;
   this->diameter = 2*radius;
-  this->motorPin   = motorPin;
+  this->motorPin = motorPin;
 
   pinMode(encoderPin,    INPUT);
   pinMode(motorPin.front,OUTPUT);
@@ -20,11 +20,11 @@ EncoderMotor::EncoderMotor(uint8_t encoderPin,int N, int radius,
 }
 
 void EncoderMotor::setMeters(float pos){
-  encoderPosition = pos * N / (PI * diameter);
+  encoderPosition = pos * N / (M_PI * diameter);
 }
 
 float EncoderMotor::getMeters(){
-  return encoderPosition * (PI * diameter) / N;
+  return encoderPosition * (M_PI * diameter) / N;
 }
 
 void EncoderMotor::setEncoder(int pos){
@@ -37,6 +37,7 @@ int EncoderMotor::getEncoder(){
 
 void EncoderMotor::setMotor(Action _act, float limit){
   act = _act;
+  this->limit = limit * N / (PI * diameter);
   digitalWrite(motorPin.front, act == Action::Forward);
   digitalWrite(motorPin.back,  act == Action::Backward);
 }
@@ -51,6 +52,10 @@ void EncoderMotor::loop(){
     }
   }
   last = now;
+
+  event = (encoderPosition == limit) ||
+          (act == Action::Forward && encoderPosition > limit) ||
+          (act == Action::Backward && encoderPosition < limit);
 }
 
 bool EncoderMotor::encoderEvent(){

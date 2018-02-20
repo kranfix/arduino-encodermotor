@@ -10,11 +10,17 @@
 
 EncoderMotor em(encoderPin,N,radius,{MotorForward,MotorBackward});
 
+unsigned long last,now;
+
 /* Setup and loop */
 void setup(){
   Serial.begin(9600);
+  pinMode(LED_BUILTIN,OUTPUT);
+  digitalWrite(LED_BUILTIN,HIGH);
   delay(10);
   Serial.println("Initializing Encoder-Motor ...");
+  now = millis();
+  last = now;
 }
 
 byte eventReported = 0;
@@ -44,5 +50,19 @@ void loop(){
       Serial.println("Error: Character not valid. User F, B or S.");
     }
   }
-}
 
+  em.loop();
+  now = millis();
+  if(now-last >= 1000){
+    last = now;
+    Serial.println();
+    Serial.print("Encoder: ");
+    Serial.print(em.getEncoder());
+    Serial.print(" ");
+    Serial.println(em.getMeters());
+    Serial.print("Evento[");
+    Serial.print((int)em.getAction());
+    Serial.print("]: ");
+    Serial.println(em.encoderEvent());
+  }
+}

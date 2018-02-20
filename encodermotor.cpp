@@ -56,3 +56,7 @@ void EncoderMotor::loop(){
 bool EncoderMotor::encoderEvent(){
   return event;
 }
+
+Action EncoderMotor::getAction(){
+  return act;
+}

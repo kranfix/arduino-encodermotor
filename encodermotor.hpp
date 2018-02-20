@@ -27,9 +27,10 @@ public:
   EncoderMotor(uint8_t encoderPin,int N, int radius, frontback_t motorPin);
   void  setMeters(float pos);
   float getMeters();
-  void  setEncoder(float pos);
+  void  setEncoder(int pos);
   int   getEncoder();
   void  setMotor(Action act, float limit);
   void  loop();
   bool  encoderEvent();
+  Action getAction();
 };

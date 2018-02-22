@@ -30,6 +30,7 @@ void loop(){
 
   if(em.encoderEvent() && !eventReported){
     Serial.println("Limit reached!");
+    eventReported = true;
   }
 
   if(Serial.available()){
@@ -37,15 +38,15 @@ void loop(){
     if(c == 'F'){
       // The motor will go forward till 100cm position
       em.setMotor(Action::Forward,100);
-      eventReported = 0;
+      eventReported = false;
     } else if(c == 'B'){
       // The motor will go back till 0 cm position.
       em.setMotor(Action::Backward,0);
-      eventReported = 0;
+      eventReported = false;
     } else if(c == 'S'){
       // Stops the motor. The limit could be any number.
       em.setMotor(Action::Stop,0);
-      eventReported = 0;
+      eventReported = false;
     } else {
       Serial.println("Error: Character not valid. User F, B or S.");
     }
@@ -58,8 +59,9 @@ void loop(){
     Serial.println();
     Serial.print("Encoder: ");
     Serial.print(em.getEncoder());
-    Serial.print(" ");
-    Serial.println(em.getMeters());
+    Serial.print(" Slots <> ");
+    Serial.print(em.getLong());
+    Serial.println("cm");
     Serial.print("Evento[");
     Serial.print((int)em.getAction());
     Serial.print("]: ");

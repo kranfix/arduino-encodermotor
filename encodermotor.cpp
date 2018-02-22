@@ -19,11 +19,11 @@ EncoderMotor::EncoderMotor(uint8_t encoderPin,int N, float radius,
   setMotor(Action::Stop,0);
 }
 
-void EncoderMotor::setMeters(float pos){
+void EncoderMotor::setLong(float pos){
   encoderPosition = pos * N / (M_PI * diameter);
 }
 
-float EncoderMotor::getMeters(){
+float EncoderMotor::getLong(){
   return encoderPosition * (M_PI * diameter) / N;
 }
 

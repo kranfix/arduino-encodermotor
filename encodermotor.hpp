@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 
-enum class Action{Stop,Forward,Backward};
+enum class Action: uint8_t{Stop,Forward,Backward};
 
 typedef struct {
   uint8_t front;
@@ -12,21 +12,22 @@ typedef struct {
 class EncoderMotor{
   // Encoder
   uint8_t encoderPin;
-  int encoderPosition;
   int limit;
   int N; // number or slots
   float radius;
   float diameter;
   uint8_t last; // last encoder read: 0 or 1
-  uint8_t event;
 
   // Motor
   frontback_t motorPin;
-  Action act;
 public:
+  int encoderPosition;
+  Action act;
+  uint8_t event;
+
   EncoderMotor(uint8_t encoderPin,int N, float radius, frontback_t motorPin);
-  void  setMeters(float pos);
-  float getMeters();
+  void  setLong(float pos);
+  float getLong();
   void  setEncoder(int pos);
   int   getEncoder();
   void  setMotor(Action act, float limit);

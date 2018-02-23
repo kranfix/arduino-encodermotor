@@ -53,9 +53,8 @@ void EncoderMotor::loop(){
   }
   last = now;
 
-  event = (encoderPosition == limit) ||
-          (act == Action::Forward && encoderPosition > limit) ||
-          (act == Action::Backward && encoderPosition < limit);
+  event = (act == Action::Forward && encoderPosition >= limit) ||
+          (act == Action::Backward && encoderPosition <= limit);
 }
 
 bool EncoderMotor::encoderEvent(){
